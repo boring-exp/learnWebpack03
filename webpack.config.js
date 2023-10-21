@@ -7,6 +7,7 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import webpack from 'webpack';
 const { ProgressPlugin } = webpack;
+import CopyPlugin from 'copy-webpack-plugin'
 
 
 const config = (env) => {
@@ -81,7 +82,12 @@ const config = (env) => {
       new HtmlWebpackPlugin({
         template: './index.html'
       }),
-      new ProgressPlugin()
+      new ProgressPlugin(),
+      new CopyPlugin({
+        patterns: [
+          { from: 'public' },
+        ],
+      })
     ],
     devServer: {
       watchFiles: ['src/**/*', 'public/**/*'],
