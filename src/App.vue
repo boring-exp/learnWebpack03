@@ -1,17 +1,21 @@
 <template>
   <div class="title big-font-size">{{ title }}</div>
-  <div>test1234567890</div>
+  <img :src="imageUrl"/>
 </template>
 <script>
 import { ref } from "vue";
+import imgSky from './assets/bg.png'
 export default {
   setup() {
+    const imageUrl = ref('/bg.png')
     const title = ref("app.vue");
     setTimeout(() => {
       title.value = "真不错";
     }, 3000);
     return {
       title,
+      imgSky,
+      imageUrl
     };
   },
 };
