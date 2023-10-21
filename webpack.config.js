@@ -2,6 +2,9 @@
 import process from 'node:process'
 import path from 'node:path'
 import { VueLoaderPlugin } from 'vue-loader'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 const config = {
   // 入口
@@ -9,7 +12,7 @@ const config = {
   // 输出
   output: {
     path: path.resolve(process.cwd(), 'dist'),
-    filename: 'main.bundle.js',
+    filename: 'js/main.[fullhash:8].js',
   },
   mode: 'production',
   // 配置webpack loader
@@ -21,15 +24,40 @@ const config = {
         // 注意检查loader是否安装了
         loader: 'vue-loader'
       },
-      { 
-        test: /\.css$/, 
+      {
+        test: /\.css$/,
         // loader有执行顺序，从右往左
-        use: ['style-loader', 'css-loader'] }
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.s[ac]ss$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+      }
     ]
   },
   // 配置webpack plugin
   plugins: [
     new VueLoaderPlugin(),
-  ]
+    new MiniCssExtractPlugin({
+      filename: 'css/main.[fullhash:8].css'
+    }),
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: './index.html'
+    })
+  ],
+  devServer: {
+    watchFiles: ['src/**/*', 'public/**/*'],
+    static: {
+      directory: path.join(process.cwd(), 'public'),
+    },
+    hot: true,
+    compress: true,
+    port: 5173,
+    client: {
+      progress: true
+    },
+    open: true,
+  },
 }
 export default config
