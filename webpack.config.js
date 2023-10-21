@@ -1,18 +1,16 @@
+// 运行环境 nodejs
+import process from 'node:process'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const config = {
-  entry: './index.js',
+  entry: './src/main.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index.bundle.js',
+    path: path.resolve(process.cwd(), 'dist'),
+    filename: 'main.bundle.js',
   },
-  mode: 'development',
-  module: {},
+  mode: 'production',
+  module: {
+    rules: []
+  },
   plugins: []
 }
-
 export default config
